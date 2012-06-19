@@ -1,0 +1,183 @@
+<html>
+
+	<head>
+
+		<title>Pieces</title>
+
+		<meta charset="utf-8" />
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta name="description" content="An exploration of color, composition and cnotext by Scott Garner" />
+		<meta name="author" content="Scott Garner" />
+		<meta name="keywords" content="Flickr, Digital Art" />
+		<meta name="copyright" content="Copyright 2012 Scott Garner" />		
+
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>	
+
+		<script type="text/javascript">
+
+			$(document).ready( function() {
+
+				var photoSize = 300;
+
+				var months = [
+					"January", "February", "March",
+					"April", "May", "June",
+					"July", "August","September",
+					"October", "November", "December"];
+				var searchMonth = months[Math.floor(Math.random() * months.length)];
+
+				$('#label').html(searchMonth);
+
+				var searchPage = 1 + Math.floor(Math.random() * 10);
+				var searchURL = "http://api.flickr.com/services/rest/?method=flickr.photos.search" +
+					"&api_key=07ff068d39f821cf7b56bc7885869640&text="+searchMonth+"+landscape" +
+					"&sort=interestingness-desc&content_type=1&extras=owner_name%2C+url_l%2C+url_o" +
+					"&page="+searchPage+"&format=json&jsoncallback=?"
+
+					$.ajax( {
+						url: searchURL,
+						dataType: "jsonp",
+						timeout : 5000,
+						success: function(data) { 
+
+							console.log(data);
+
+		    				var photo = getPhoto(data);
+
+		    				var flickrURL = "http://www.flickr.com/photos/"+photo.owner+"/"+photo.id+"";
+		    				$("#credit").html('<a href="'+ flickrURL+'">Photo</a> by '+photo.ownername+'.')
+
+		    				var photoURL;
+
+		    				if (photo.url_o != null) {
+		    					photoURL = photo.url_o;
+		    					photoWidth = photo.width_o;
+		    					photoHeight = photo.height_o; 
+		    				} else if (photo.url_l != null) {
+								photoURL = photo.url_l;
+		    					photoWidth = photo.width_l;
+		    					photoHeight = photo.height_l; 	
+							} else {
+								console.log('Where is the photo?');
+							}
+
+		    				$('#sliceone').css({
+		    					'background-position': '-'+getOffset(photoWidth)+'px -'+getOffset(photoHeight)+'px', 
+		    					'background-image': 'url(' + photoURL +')'
+		    				});
+		    				$('#slicetwo').css({
+		    					'background-position': '-'+getOffset(photoWidth)+'px -'+getOffset(photoHeight)+'px', 
+		    					'background-image': 'url(' + photoURL +')'
+		    				});
+		    				$('#slicethree').css({
+		    					'background-position': '-'+getOffset(photoWidth)+'px -'+getOffset(photoHeight)+'px', 
+		    					'background-image': 'url(' + photoURL +')'
+		    				});
+		    			},	
+						error: function() { 
+							console.log("Couldn't get images.");
+						}
+					});	
+
+					function getOffset (max) {
+						return Math.floor(Math.random() * (max - photoSize));
+					}
+
+					function getPhoto (photoData) {
+
+							var photoIndex = Math.floor(Math.random() * photoData.photos.photo.length);
+		    				var photo = photoData.photos.photo[photoIndex];
+
+		    				if (photo.url_o == null && photo.url_o == null)
+		    					return getPhoto(photoData);
+		    				else
+		    					return photo;
+					}
+
+ 				});
+		</script>
+
+		<style>
+
+			html, body {
+				margin: 0;
+				padding: 0;
+				width: 100%;
+				height: 100%;
+			}
+
+			body {
+				background: #fff;
+				color: #dfdfdf;
+				font-family: 'Helvetica Neue', 'Helvetica-Neue', Helvetcia, Arial, sans-serif;	
+				font-weight: 300;							
+			}
+
+
+			footer {
+				position: absolute;
+				width: 100%;
+				bottom: 0;
+				margin-bottom: 8px;
+				font-size: .75em;
+				text-align: center;
+			}
+
+			footer a {
+				color: #dfdfdf;
+			}
+
+			footer a:hover {
+				color: #bdbdbd;
+			}
+
+			#content {
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				margin-top: -150px;
+				margin-left: -486px;
+				padding: 0;				
+				width: 972px;
+			}
+
+			#slices > div {
+				background: #efefef;
+				width: 300;
+				height: 300;
+				-webkit-border-radius: 12px;
+				-moz-border-radius: 12px;
+				border-radius: 12px;
+				float:left;
+				margin: 0 12px;
+			}
+
+			#label {
+				font-size: 1.25em;
+				padding-top: 10px;
+				margin-left: 24px;
+				clear: both;
+			}
+
+		</style>
+	</head>
+
+	<body>
+
+		<div id="content">
+			<div id="slices">
+				<div id="sliceone"></div>
+				<div id="slicetwo"></div>
+				<div id="slicethree"></div>
+			</div>
+			<div id="label">Pieces</div>
+		</div>
+
+		<footer>
+			Pieces v002, 2012.
+			<a href="http://scott.j38.net">Scott Garner</a> after <a href="http://aboutoceans.tumblr.com/">Heather Chen</a>.
+			<span id="credit">Photo from <a href="http://flickr.com/">Flickr</a>.</span>
+		</footer>
+	</body>
+
+</html>
