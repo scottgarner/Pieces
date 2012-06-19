@@ -11,6 +11,70 @@
 		<meta name="keywords" content="Flickr, Digital Art" />
 		<meta name="copyright" content="Copyright 2012 Scott Garner" />		
 
+		<style>
+
+			html, body {
+				margin: 0;
+				padding: 0;
+				width: 100%;
+				height: 100%;
+			}
+
+			body {
+				background: #fff;
+				color: #dfdfdf;
+				font-family: 'Helvetica Neue', 'Helvetica-Neue', Helvetcia, Arial, sans-serif;	
+				font-weight: 300;							
+			}
+
+			footer {
+				position: absolute;
+				width: 100%;
+				bottom: 0;
+				margin-bottom: 8px;
+				font-size: .75em;
+				text-align: center;
+			}
+
+			footer a {
+				color: #dfdfdf;
+			}
+
+			footer a:hover {
+				color: #bdbdbd;
+			}
+
+			#content {
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				margin-top: -150px;
+				margin-left: -486px;
+				padding: 0;				
+				width: 972px;
+			}
+
+			#slices > div {
+				background: #efefef;
+				width: 300;
+				height: 300;
+				-webkit-border-radius: 12px;
+				-moz-border-radius: 12px;
+				border-radius: 12px;
+				float:left;
+				margin: 0 12px;
+			}
+
+			#label {
+				color: #cfcfcf;
+				font-size: 1.25em;
+				padding-top: 10px;
+				margin-left: 24px;
+				clear: both;
+			}
+
+		</style>
+
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>	
 
 		<script type="text/javascript">
@@ -44,8 +108,9 @@
 
 		    				var photo = getPhoto(data);
 
-		    				var flickrURL = "http://www.flickr.com/photos/"+photo.owner+"/"+photo.id+"";
-		    				$("#credit").html('<a href="'+ flickrURL+'">Photo</a> by '+photo.ownername+'.')
+		    				var flickrUserURL = "http://www.flickr.com/photos/"+photo.owner+"/";
+		    				var flickrPhotoURL = "http://www.flickr.com/photos/"+photo.owner+"/"+photo.id+"/";
+		    				$("#credit").html('<a href="'+ flickrPhotoURL+'">Photo</a> by <a href="'+flickrUserURL+'">'+photo.ownername+'</a>.')
 
 		    				var photoURL;
 
@@ -88,7 +153,9 @@
 							var photoIndex = Math.floor(Math.random() * photoData.photos.photo.length);
 		    				var photo = photoData.photos.photo[photoIndex];
 
-		    				if (photo.url_o == null && photo.url_o == null)
+		    				if ((photo.url_o == null && photo.url_o == null) || 
+		    					photo.width_o < 900 || photo.width_l < 900 ||
+		    					photo.width_o > 2700)
 		    					return getPhoto(photoData);
 		    				else
 		    					return photo;
@@ -97,69 +164,6 @@
  				});
 		</script>
 
-		<style>
-
-			html, body {
-				margin: 0;
-				padding: 0;
-				width: 100%;
-				height: 100%;
-			}
-
-			body {
-				background: #fff;
-				color: #dfdfdf;
-				font-family: 'Helvetica Neue', 'Helvetica-Neue', Helvetcia, Arial, sans-serif;	
-				font-weight: 300;							
-			}
-
-
-			footer {
-				position: absolute;
-				width: 100%;
-				bottom: 0;
-				margin-bottom: 8px;
-				font-size: .75em;
-				text-align: center;
-			}
-
-			footer a {
-				color: #dfdfdf;
-			}
-
-			footer a:hover {
-				color: #bdbdbd;
-			}
-
-			#content {
-				position: absolute;
-				top: 50%;
-				left: 50%;
-				margin-top: -150px;
-				margin-left: -486px;
-				padding: 0;				
-				width: 972px;
-			}
-
-			#slices > div {
-				background: #efefef;
-				width: 300;
-				height: 300;
-				-webkit-border-radius: 12px;
-				-moz-border-radius: 12px;
-				border-radius: 12px;
-				float:left;
-				margin: 0 12px;
-			}
-
-			#label {
-				font-size: 1.25em;
-				padding-top: 10px;
-				margin-left: 24px;
-				clear: both;
-			}
-
-		</style>
 	</head>
 
 	<body>
@@ -174,7 +178,7 @@
 		</div>
 
 		<footer>
-			Pieces v002, 2012.
+			<a href="http://scott.j38.net/interactive/pieces/">Pieces</a> v002, 2012.
 			<a href="http://scott.j38.net">Scott Garner</a> after <a href="http://aboutoceans.tumblr.com/">Heather Chen</a>.
 			<span id="credit">Photo from <a href="http://flickr.com/">Flickr</a>.</span>
 		</footer>
