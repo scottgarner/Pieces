@@ -93,7 +93,7 @@
 				$('#label').html(searchMonth);
 
 				var searchPage = 1 + Math.floor(Math.random() * 10);
-				var searchURL = "http://api.flickr.com/services/rest/?method=flickr.photos.search" +
+				var searchURL = "https://api.flickr.com/services/rest/?method=flickr.photos.search" +
 					"&api_key=07ff068d39f821cf7b56bc7885869640&text="+searchMonth+"+landscape" +
 					"&sort=interestingness-desc&content_type=1&extras=owner_name%2C+url_l%2C+url_o" +
 					"&page="+searchPage+"&format=json&jsoncallback=?"
